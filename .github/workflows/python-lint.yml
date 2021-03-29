@@ -1,4 +1,4 @@
-name: flake8
+name: flake8 and pytest
 
 # Run this workflow every time a new commit pushed to your repository
 on: [push]
@@ -6,7 +6,7 @@ on: [push]
 jobs:
   # Set the job key. The key is displayed as the job name
   # when a job name is not provided
-  build:
+  test:
     # Name the Job    name: Lint code python
     # Set the type of machine to run on
     runs-on: ubuntu-latest
@@ -29,6 +29,13 @@ jobs:
           pip install poetry
           make install
       # Runs the flake8-Linter action
-      - name: Test with flake8
+      - name: Test with flake8 and poetry
         run: |
           make lint
+          make test
+      - name: publish code coverage to codeclimate
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: 27006cb13d861532b90e8f2bdde790d9ff9f350ea10cfa2b31091a90fd705807
+        with:
+          coverageCommand: make test-coverage
