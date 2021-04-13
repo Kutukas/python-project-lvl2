@@ -1,9 +1,9 @@
-import json
+from gendiff.parse_data import extract_data
 
 
 def generate_diff(file_path1, file_path2):
-    dict1 = json_to_dict(file_path1)
-    dict2 = json_to_dict(file_path2)
+    dict1 = extract_data(file_path1)
+    dict2 = extract_data(file_path2)
     raw_result = []
     for key in dict1:
         if key in dict2:
@@ -23,12 +23,4 @@ def generate_diff(file_path1, file_path2):
     result = '\n{\n'
     for elem in sorted_raw_result:
         result += '  {} {}: {}\n'.format(elem[1], elem[0], elem[2])
-    return result + '}' + '\n'
-
-
-def json_to_dict(json_file_path):
-    result = json.load(open(json_file_path))
-    for key, value in result.items():
-        if type(value) is bool:
-            result[key] = str(value).lower()
-    return result
+    return result + '}'
