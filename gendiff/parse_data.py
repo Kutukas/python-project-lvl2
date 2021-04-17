@@ -3,20 +3,21 @@ import json
 import yaml
 
 
+def get_correct_format(dict_data):
+    for key, value in dict_data.items():
+        if type(value) is bool:
+            dict_data[key] = str(value).lower()
+    return dict_data
+
+
 def json_to_dict(json_file_path):
     result = json.load(open(json_file_path))
-    for key, value in result.items():
-        if type(value) is bool:
-            result[key] = str(value).lower()
-    return result
+    return get_correct_format(result)
 
 
 def yml_to_dict(yml_file_path):
     result = yaml.safe_load(open(yml_file_path))
-    for key, value in result.items():
-        if type(value) is bool:
-            result[key] = str(value).lower()
-    return result
+    return get_correct_format(result)
 
 
 def get_type(file_path):
